@@ -21,15 +21,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/Button"
+    <EditText
+        android:id="@+id/simpleEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="connect"
-        android:textSize="30dp"
         android:layout_centerInParent="true"
+        android:hint="Password"
+        android:textSize="40dp"
+        android:textColor="#D5D5D5"/><!--set the red text color-->
 
     />
+
+    <Button
+        android:id="@+id/Button"
+        android:layout_below="@+id/simpleEditText"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="connect"
+        android:textSize="20dp"
+
+    />
+
+
 
 
 

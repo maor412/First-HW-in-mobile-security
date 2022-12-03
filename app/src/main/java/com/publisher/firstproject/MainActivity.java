@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button button;
     private TextView text;
+    EditText editText;
     private int curBrightnessValue;
     private boolean wifiTerm = false;
     @Override
@@ -69,11 +74,25 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(e->{
             checkForInternetConaction();
+
+
+
             curBrightnessValue = android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS,-1);
-            if(wifiTerm && curBrightnessValue == 255)
+            if(wifiTerm && curBrightnessValue == 255 && checkForBatteryPrecents() == Integer.parseInt(String.valueOf(editText.getText())))
                 text.setText("Connected");
         });
 
+    }
+
+    private int checkForBatteryPrecents() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = this.registerReceiver(null, ifilter);
+
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        return (level * 100) / (int)scale;
+//        Toast.makeText(MainActivity.this, String.valueOf(batteryPct),
+//                Toast.LENGTH_LONG).show();
     }
 
     private void checkForInternetConaction() {
@@ -91,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         button = findViewById(R.id.Button);
         text = findViewById(R.id.lableText);
+        editText = findViewById(R.id.simpleEditText);
     }
     @Override
     protected void onStop() {
